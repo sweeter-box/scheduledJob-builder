@@ -14,8 +14,27 @@
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
     <!-- Latest compiled and minified Locales -->
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/locale/bootstrap-table-zh-CN.min.js"></script>
-    <style>
 
+    <!--http请求工具-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="http://127.0.0.1/layer/layer.js"></script>
+
+    <style>
+        .opt-btn{
+            margin: 0 5px 0 5px;
+            font-weight: bold;
+        }
+
+        .statusStyle0{
+            color: orange;
+            font-weight: bold;
+        }
+
+        .statusStyle1{
+            color: green;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -47,63 +66,7 @@
 
     <table id="tab" class="table table-hover" style="margin-top: 20px"></table>
 </div>
-<script>
-    $('#tab').bootstrapTable({
-        method : 'get',
-        url : "/scheduleJob/findList",//请求路径
-        striped : true, //是否显示行间隔色
-        pageNumber : 1, //初始化加载第一页
-        pagination : true,//是否分页
-        sidePagination : 'client',//server:服务器端分页|client：前端分页
-        pageSize : 5,//单页记录数
-        pageList : [ 5, 10, 20, 30 ],//可选择单页记录数
-        showRefresh : false,//刷新按钮
-        queryParams : function(params) {//上传服务器的参数
-            var temp = {//如果是在服务器端实现分页，limit、offset这两个参数是必须的
-                limit : params.limit, // 每页显示数量
-                offset : params.offset, // SQL语句起始索引
-                Name : $('#search_name').val(),
-                Tel : $('#search_tel').val()
-            };
-            return temp;
-        },
-        columns : [
-            {title : 'id', field : 'id'},
-            {title : '标题', field : 'title', align:'center',sortable : true},
-            {title : 'className', field : 'className',align:'center'},
-            {title : 'cron表达式', field : 'cron',align:'center'},
-            {title : '描述', field : 'description',align:'center'},
-            {title : '启用状态', field : 'status',align:'center', formatter : formatSex},
-            {title : '运行状态', field : 'runStatus',align:'center'},
-            {title : '下一次执行时间', field : 'nextExeTime',align:'center'},
-            {title : '最后一次执行时间', field : 'lastExeTime',align:'center'},
-            {title : '最后一次业务执行状态', field : 'lastBusinessStatus',align:'center', formatter : formatSex},
-            {title : '操作', field : 'id',align:'center', formatter : operation}
-        ]
-    });
 
-    //value代表该列的值，row代表当前对象
-    function formatSex(value, row, index) {
-        return value;
-    }
-
-    //删除、编辑操作
-    function operation(value, row, index) {
-        var htm = '<button type="button" style="margin: 0 5px 0 5px" class="btn btn-danger btn-sm">停用</button>';
-            htm += '<button type="button" style="margin: 0 5px 0 5px" class="btn btn-warning btn-sm">启用</button>';
-            htm += '<button type="button" style="margin: 0 5px 0 5px" class="btn btn-primary btn-sm">启用</button>';
-          /*  htm += '<button type="button" class="btn btn-danger">启用</button>';*/
-            htm += '<button type="button" style="margin: 0 5px 0 5px" class="btn btn-info btn-sm">重启</button>';
-        return htm;
-    }
-
-    //查询按钮事件
-    $('#search_btn').click(function() {
-        $('#tab').bootstrapTable('refresh', {
-            url : '/scheduleJob/findList'
-        });
-    })
-
-</script>
+<script src="http://127.0.0.1/js/scheduledJob.js"></script>
 </body>
 </html>

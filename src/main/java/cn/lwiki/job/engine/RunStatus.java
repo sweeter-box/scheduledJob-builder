@@ -1,11 +1,12 @@
 package cn.lwiki.job.engine;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author sweeter
  * @date 2020/2/29
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum RunStatus {
     /**
      * 任务启用状态
@@ -13,7 +14,7 @@ public enum RunStatus {
     INACTIVE(0, "停止"),
     RUNNING(1, "运行中");
     private int value;
-    @JsonValue
+
     private String name;
 
     RunStatus(int value, String name) {

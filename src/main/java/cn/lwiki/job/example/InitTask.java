@@ -28,6 +28,7 @@ public class InitTask {
         entity.setId(1L);
         entity.setTitle("测试定时任务");
         entity.setCron("0/1000 * *  * * ? ");
+        entity.setDescription("这是一个描述");
         entity.setClassName("cn.lwiki.job.example.DemoTask");
         entity.setStatus(EnableStatus.ENABLE);
 

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import java.lang.reflect.Constructor;
@@ -11,7 +12,6 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 /**
@@ -47,7 +47,7 @@ public class JobHandler {
             log.info("定时任务:[{}]已处于运行状态...", jobId);
             return;
         }
-        executeJob(selectJobsDetail(jobId));
+        executeJob(getJobDetail(jobId));
     }
 
     public void stop(Long jobId) {
@@ -61,9 +61,14 @@ public class JobHandler {
         }
     }
 
-    private ScheduleJobEntity selectJobsDetail(Long jobId) {
-        return Optional.ofNullable(scheduleJobRepository.getOne(jobId)).orElseThrow(() -> new TaskException("该["+jobId+"]任务不存在"));
+    public ScheduleJobEntity getJobDetail(Long jobId) {
+        ScheduleJobEntity entity = new ScheduleJobEntity();
+        entity.setId(jobId);
+        entity = scheduleJobRepository.findOne(Example.of(entity)).orElseThrow(() -> new TaskException("该["+jobId+"]任务不存在"));
+        entity.setRunStatus(this.getJobsMap().containsKey(entity.getId()) ? RunStatus.RUNNING:RunStatus.INACTIVE);
+        return entity;
     }
+
 
     /**
      * 根据jobId重启任务
@@ -71,7 +76,7 @@ public class JobHandler {
      */
     public void reset(Long jobId) {
         ScheduledFuture scheduledFuture = jobsMap.get(jobId);
-        ScheduleJobEntity scheduleJob = selectJobsDetail(jobId);
+        ScheduleJobEntity scheduleJob = getJobDetail(jobId);
         if (Objects.nonNull(scheduledFuture)) {
             //中断任务
             scheduledFuture.cancel(true);
@@ -90,7 +95,7 @@ public class JobHandler {
      */
     private void init() {
         // 从数据库获取任务信息
-        List<ScheduleJobEntity> jobs = scheduleJobRepository.findAllEnableList();
+        List<ScheduleJobEntity> jobs = scheduleJobRepository.findListByStatus(EnableStatus.ENABLE);
         if (!CollectionUtils.isEmpty(jobs)) {
             jobs.forEach(task ->{
                 try {

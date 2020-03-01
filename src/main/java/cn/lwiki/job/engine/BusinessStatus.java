@@ -1,11 +1,13 @@
 package cn.lwiki.job.engine;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * @author sweeter
  * @date 2020/2/29
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum BusinessStatus {
     /**
      * 任务启用状态
@@ -14,7 +16,7 @@ public enum BusinessStatus {
     SUCCESS(1, "成功");
 
     private int value;
-    @JsonValue
+
     private String name;
 
     BusinessStatus(int value, String name) {

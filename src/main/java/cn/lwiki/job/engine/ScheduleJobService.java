@@ -48,5 +48,22 @@ public interface ScheduleJobService {
      */
     void save(ScheduleJobEntity scheduleJobEntity);
 
-    List<ScheduleJobEntity> findAllList();
+    /**
+     * 查询所有定时任务
+     * @return
+     */
+    List<ScheduleJobEntity> findAllList(ScheduleJobEntity entity);
+
+    /**
+     * 详情查询
+     * @param jobId
+     * @return
+     */
+    ScheduleJobEntity getJobDetail(Long jobId);
+
+    /**
+     * 查询所有启用状态的任务
+     * @return
+     */
+    List<ScheduleJobEntity> findAllEnableList();
 }
