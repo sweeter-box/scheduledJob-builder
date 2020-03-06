@@ -1,13 +1,12 @@
-package cn.lwiki.job.example;
+package cn.lwiki.support.job.example;
 
-import cn.lwiki.job.engine.EnableStatus;
-import cn.lwiki.job.engine.ScheduleJobEntity;
-import cn.lwiki.job.engine.ScheduleJobRepository;
+import cn.lwiki.support.job.engine.EnableStatus;
+import cn.lwiki.support.job.engine.ScheduleJobEntity;
+import cn.lwiki.support.job.engine.ScheduleJobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 

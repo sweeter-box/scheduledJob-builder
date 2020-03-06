@@ -1,4 +1,4 @@
-package cn.lwiki.job;
+package cn.lwiki.support.job;
 
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;

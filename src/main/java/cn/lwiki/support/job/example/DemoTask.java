@@ -1,6 +1,6 @@
-package cn.lwiki.job.example;
+package cn.lwiki.support.job.example;
 
-import cn.lwiki.job.engine.BaseTask;
+import cn.lwiki.support.job.engine.BaseTask;
 import lombok.extern.java.Log;
 import org.springframework.context.ApplicationContext;
 
@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
  * @date 2020/2/29
  */
 @Log
-public class DemoTask extends BaseTask{
+public class DemoTask extends BaseTask {
     /**
      * 子类有且仅有该构造方法
      *
