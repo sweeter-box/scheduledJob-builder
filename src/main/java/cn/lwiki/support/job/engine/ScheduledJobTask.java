@@ -18,6 +18,7 @@ public class ScheduledJobTask extends ThreadPoolTaskScheduler {
     }
 
     public ScheduledJobTask() {
+        //线程池大小可根据实际情况修改，也可移动到统一配置类中集中管理
         this.setPoolSize(20);
         this.setThreadNamePrefix("scheduledJobTask-");
         this.setWaitForTasksToCompleteOnShutdown(true);

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -110,7 +111,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
         ScheduleJobEntity entity = new ScheduleJobEntity();
         entity.setId(jobId);
         entity = scheduleJobRepository.findOne(Example.of(entity)).orElseThrow(() -> new TaskException("该["+jobId+"]任务不存在"));
-        entity.setRunStatus(jobHandler.getJobsMap().containsKey(entity.getId()) ? RunStatus.RUNNING:RunStatus.INACTIVE);
+        entity.setRunStatus(jobHandler.getJobsMap().containsKey(entity.getId()) ? RunStatus.RUNNING: RunStatus.INACTIVE);
         return entity;
     }
 
@@ -130,7 +131,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
             return Collections.emptyList();
         }else {
             return jobList.stream()
-                    .peek(job -> job.setRunStatus(jobHandler.getJobsMap().containsKey(job.getId()) ? RunStatus.RUNNING:RunStatus.INACTIVE))
+                    .peek(job -> job.setRunStatus(jobHandler.getJobsMap().containsKey(job.getId()) ? RunStatus.RUNNING: RunStatus.INACTIVE))
                     .collect(Collectors.toList());
         }
     }

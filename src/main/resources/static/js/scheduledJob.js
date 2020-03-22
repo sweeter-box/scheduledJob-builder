@@ -58,22 +58,13 @@ function operation(value, row, index) {
     }else {
         htm += '<button type="button"  class="opt-btn btn btn-warning btn-sm" onclick="start('+row.id+')">开始</button>';
     }
-    //htm += '<button type="button"  class="opt-btn btn btn-primary btn-sm" onclick="start(row.id)">开始</button>';
     /*  htm += '<button type="button" class="btn btn-danger">启用</button>';*/
     htm += '<button type="button" style="margin: 0 5px 0 5px" class="btn btn-info btn-sm" onclick="reset('+row.id+')">重启</button>';
     return htm;
 }
 
 //查询按钮事件
-$('#search_btn').click(function() {
-    $('#tab').bootstrapTable('refresh', {
-        url : baseUrl+'/scheduleJob/findList',
-        query:{
-            title : $('#title').val(),
-            className : $('#className').val()
-        }
-    });
-});
+$('#search_btn').click(() =>refreshData());
 
 /**
  * 重启任务
@@ -107,29 +98,28 @@ function start(id) {
 
 
 function getData(url,params){
-    axios.get(url, {params:params}).then(function (data) {
-
-    }).catch(function (error) {
-
-    });
-    $('#tab').bootstrapTable('refresh');
+    axios.get(url, {params: params})
+        .then((data) => refreshData())
+        .catch((error) => console.log(error));
 }
 
 
 function postData(url,params) {
-    axios.post(url, params).then(function (data) {
-    }).catch(function (error) {
-
-    });
+    axios.post(url, params)
+        .then((data) => { })
+        .catch((error) => console.log(error));
 }
 
 //定时刷新页面
-setInterval(function () {
+setInterval(() => refreshData(), 60000);
+
+//刷新数据
+function refreshData() {
     $('#tab').bootstrapTable('refresh', {
-        url : '/scheduleJob/findList',
+        url : baseUrl+'/scheduleJob/findList',
         query:{
             title : $('#title').val(),
             className : $('#className').val()
         }
     });
-}, 60000);
+}

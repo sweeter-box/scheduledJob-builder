@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,14 +22,14 @@ public class InitTask {
     @Autowired
     private ScheduleJobRepository scheduleJobRepository;
 
-    //@PostConstruct
+    @PostConstruct
     public void init() {
         ScheduleJobEntity entity = new ScheduleJobEntity();
         entity.setId(1L);
         entity.setTitle("测试定时任务");
         entity.setCron("0/1000 * *  * * ? ");
         entity.setDescription("这是一个描述");
-        entity.setClassName("cn.lwiki.job.example.DemoTask");
+        entity.setClassName("cn.lwiki.support.job.example.DemoTask");
         entity.setStatus(EnableStatus.ENABLE);
 
         List<ScheduleJobEntity> jobList = Arrays.asList(entity);

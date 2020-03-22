@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
+
 /**
  * @author sweeter
  * @date 2020/02/29
@@ -22,8 +24,8 @@ import java.util.concurrent.ScheduledFuture;
 @Component
 @Slf4j
 public class JobHandler {
-
-    private final ConcurrentHashMap<Long, ScheduledFuture> jobsMap = new ConcurrentHashMap<>(32);
+    //使用volatile的目的：将任务的状态操作同步刷新
+    private volatile ConcurrentHashMap<Long, ScheduledFuture> jobsMap = new ConcurrentHashMap<>(32);
 
     private final ApplicationContext applicationContext;
 
@@ -65,7 +67,7 @@ public class JobHandler {
         ScheduleJobEntity entity = new ScheduleJobEntity();
         entity.setId(jobId);
         entity = scheduleJobRepository.findOne(Example.of(entity)).orElseThrow(() -> new TaskException("该["+jobId+"]任务不存在"));
-        entity.setRunStatus(this.getJobsMap().containsKey(entity.getId()) ? RunStatus.RUNNING:RunStatus.INACTIVE);
+        entity.setRunStatus(this.getJobsMap().containsKey(entity.getId()) ? RunStatus.RUNNING: RunStatus.INACTIVE);
         return entity;
     }
 
